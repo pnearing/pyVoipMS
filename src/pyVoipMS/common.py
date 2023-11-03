@@ -5,7 +5,7 @@ Common Functions / Methods, Vars.
 """
 from typing import Any, Optional
 from requests import get, HTTPError, ConnectionError, JSONDecodeError, Response
-from .Error import RequestsError
+from .Error import RequestsError, VoipMSError
 
 BASE_URL: str = 'https://voip.ms/api/v1/rest.php'
 """REST API base URL."""
@@ -41,4 +41,6 @@ def make_request(username: str,
         raise RequestsError(2, e.strerror, e.errno)
     except JSONDecodeError as e:
         raise RequestsError(3, e.strerror, e.errno)
+    if reply['status'] != 'success':
+        raise VoipMSError(4, reply['message'], reply['status'])
     return reply

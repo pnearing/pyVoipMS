@@ -23,8 +23,6 @@ class VoipMS(object):
         if advanced:
             params = {'advanced': advanced}
         response: dict[str, Any] = make_request(self._username, self._password, "getBalance", params)
-        if response['status'] != 'success':
-            raise Error(4, response['message'], response['status'])
         return response['balance']
 
 
